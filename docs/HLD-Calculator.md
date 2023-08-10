@@ -30,6 +30,11 @@ Based on those features we are proposing the following solution:
 
 ### HLD (High Level Design)
 
+- We are going to create an simple mechanism with user and password on our local database
+- We choose to use SQLLite as a simple database engine to start our calculator
+- Based on the simplicity of our backend to make authentication, we have decided to create a simple router...
+-
+
 ## Consequences
 
 This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
