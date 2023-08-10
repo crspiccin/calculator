@@ -12,6 +12,7 @@ export default function Calculator() {
 	const [digitStack, setDigitStack] = useState([]);
 	const [operatorStack, setOperatorStack] = useState([]);
 	const [memory, setMemory] = useState(0);
+	const [history, setHistory] = useState([]);
 
 	function handleDigit(value) {
 		if (operatorStack.length === 0) {
@@ -27,6 +28,9 @@ export default function Calculator() {
 
 	function handleOperator(value) {
 		const digitStackTmp = [result, ...digitStack];
+
+		console.log("digitStackTmp", digitStackTmp);
+		console.log("operatorStack", operatorStack);
 		setDigitStack(digitStackTmp);
 		if (["*", "/", "-", "+", "=", "ˆ"].indexOf(value) !== -1 && operatorStack.length === 1) {
 			const firstTerm = digitStackTmp.pop();
@@ -36,10 +40,14 @@ export default function Calculator() {
 			if (operator === "ˆ") {
 				expression = expression.replace("ˆ", "**");
 			}
+			console.log(expression);
 			const result = eval(expression); // TODO Changeit
 			setResult(result);
 			setResultOperation(true);
-			digitStackTmp.push(result);
+			if (value !== "=") {
+				digitStackTmp.push(result);
+			}
+
 			setDigitStack(digitStackTmp);
 		} else if (value === "SQRT") {
 			const firstTerm = digitStackTmp.pop();
@@ -92,7 +100,7 @@ export default function Calculator() {
 	}
 
 	function handleDecimal(value) {
-		if (!result.includes(value) && result !== "") {
+		if (!isResultOperation && !result.includes(value) && result !== "") {
 			setResult(result + value);
 		}
 	}
