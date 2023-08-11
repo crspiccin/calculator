@@ -10,12 +10,11 @@ const HTTP_STATUS_NOT_FOUND = 404;
 const router = Router();
 const userRepository = new UserRepository();
 
-/**
- * Get all users
- */
-router.get("/", async (req, res) => {
+router.get("/health", async (req, res) => {
 	const result = await userRepository.findAll();
-	return res.json(result);
+	return res.json({
+		status: result ? "ok" : "not_ok",
+	});
 });
 
 /**
