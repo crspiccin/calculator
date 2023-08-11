@@ -6,19 +6,7 @@ import cors from "cors";
 const app = express();
 const port = process.env.PORT || 3010;
 
-const allowList = process.env.CORS_URL?.split(",") || [];
-console.log(allowList);
-const corsOptions = {
-	origin: (origin: any, callback: any) => {
-		if (allowList.indexOf(origin) !== -1) {
-			callback(null, true);
-		} else {
-			callback(new Error());
-		}
-	},
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 
