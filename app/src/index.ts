@@ -4,9 +4,10 @@ import userRouter from "./routes/user";
 import cors from "cors";
 
 const app = express();
-const port = 3010;
+const port = process.env.PORT || 3010;
 
-const allowList = ["http://localhost:3000"];
+const allowList = process.env.CORS_URL?.split(",") || [];
+console.log(allowList);
 const corsOptions = {
 	origin: (origin: any, callback: any) => {
 		if (allowList.indexOf(origin) !== -1) {
@@ -24,13 +25,13 @@ app.use(express.json());
 app.use("/users", userRouter);
 
 const server = app.listen(port, () => {
-	console.log(`Server started at http://localhost:${port}`);
+	console.info(`Server started at http://localhost:${port}`);
 });
 
 process.on("SIGTERM", () => {
 	console.info("SIGTERM signal received.");
-	console.log("Closing http server.");
+	console.info("Closing http server.");
 	server.close(() => {
-		console.log("Http server closed.");
+		console.info("Http server closed.");
 	});
 });

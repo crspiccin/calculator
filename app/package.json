@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf ./build && npx tsc",
-    "dev": "npx tsc && node ./build/index.js"
+    "dev": "npm run build && node ./build/index.js"
   },
   "author": "",
   "license": "ISC",
