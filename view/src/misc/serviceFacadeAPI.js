@@ -14,7 +14,6 @@ async function signup(user) {
 }
 
 async function login(user) {
-	console.log(user);
 	const response = await axios.post(url + "/users/login", user, {
 		headers: {
 			"Access-Control-Allow-Origin": "*",

@@ -1,11 +1,8 @@
 import { User } from "../entity/entities";
 import { SQLLiteRepository } from "./SQLiteRepository";
+import UserRepositoryInterface from "./UserRepositoryInterface";
 
-export default class UserRepository extends SQLLiteRepository {
-	public async findAll(): Promise<any> {
-		return super.all("SELECT * from USER");
-	}
-
+export default class UserRepository extends SQLLiteRepository implements UserRepositoryInterface {
 	public async create(user: User): Promise<string> {
 		const sql = "INSERT INTO USER ( email, password) VALUES (?,?)";
 		const id = await super.insert(sql, [user.email, user.password]);

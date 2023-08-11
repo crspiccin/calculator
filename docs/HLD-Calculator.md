@@ -2,9 +2,7 @@
 
 ## Context
 
-Currently, our users complaint about the lack of confidence when making basic math operations like addition, subtraction, multiplication and division and based on these and others needs we are going to construct a new calculator portal. This portal should have the following.
-
-### Requirements:
+Currently, our users complaint about the lack of confidence when making basic math operations like addition, subtraction, multiplication and division and based on these and others needs we are going to construct a new calculator portal. This portal should have the following requirements:
 
 - The calculator should have a browser-based user interface (ie it can be opened using a web
   browser)
@@ -26,19 +24,40 @@ Currently, our users complaint about the lack of confidence when making basic ma
 
 ## Decision
 
-Based on those features we are proposing the following solution:
+Based on those features we are proposing the following solution design.
 
 ### HLD (High Level Design)
 
-- We are going to create an simple mechanism with user and password on our local database
-- We choose to use SQLLite as a simple database engine to start our calculator
-- Based on the simplicity of our backend to make authentication, we have decided to create a simple router...
--
+![](./HLD-Calculator.png)
+
+Our proposal is to create a solution composed by the following modules:
+
+### Calculator
+
+- For our calculator, as its a enclosed domain without external intergrations necessity - only pure math, we are going to process all calculator engine on the frontend.
+- We choose React.JS as our frontend engine, given the broad use and community, besides the fact it makes easier to encapsulate logic and to work with html events and rendering.
+- Our structure will have a Calculator component with states processing all the math engine, being a parent component, a Button component representing an operation, digit, memory, etc and a Display representing the math result.
+
+### Authentication
+
+- We must create an authentication service, this service will expose a REST interface with signup en login operations, and we choose to use typescript based on Express.JS
+- We are going to create an simple mechanism with user and password on our database, the user password will be criptographed.
+- Initially, we are going to use SQL database, as we have only one single instance for our MVP ,we can use SQL Lite as our SQL database engine.
+- The service must follow the Onion Architecture, in this type of architecture, the service and entities are agnostic on the technologies that we are using to expose and persist information, only taking care on the businness rules. It will make easier in the future if we need change how to expose the application, changing databases, inject unit tests, etc.
+
+### Deploy
+
+- To deploy our application, we need commit on the main branch. If we follow a trunk based develoopment, once a PR is approved and the code merge into main, it will deployed on the cloud and be online.
 
 ## Consequences
 
-This section describes the resulting context, after applying the decision. All consequences should be listed here, not just the "positive" ones. A particular decision may have positive, negative, and neutral consequences, but all of them affect the team and project in the future.
+- Free costs to run our MVP, we can iterate with our initial users and get feedback for free.
+- It's important to mention that our choice towards SQL Lite is based currenlty on the small size of our application, we are testing and using a small workload without multiples instances, but as our application scale, we need rethink our database strategy, choosing a database where we can afford multiple connections from multiples services instances.
+- Since we are using a free hosting (Render) initially, eventually we are going to face latency in our login and signup process, we can move from the free tier to the paid tier or move to another cloud provider offering more tools as we grow and our architecture turning more complex.
+- Our log system is very basic using only console.log and console.error which is not the ideal, in the long run we must change this model using a more robust alternative like winston.
 
 ##### References
 
 - [About ADR's](https://github.com/joelparkerhenderson/architecture-decision-record)
+- [Onion Architecture] (https://www.codeguru.com/csharp/understanding-onion-architecture/)
+- [Render - Free instance](https://render.com/docs/free)
