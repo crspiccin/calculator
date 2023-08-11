@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { evaluate } from "mathjs";
 import Display from "./Display";
 import DigitButton from "./DigitButton";
 import OperatorButton from "./OperatorButton";
@@ -29,20 +30,13 @@ export default function Calculator() {
 
 	function handleOperator(value) {
 		const digitStackTmp = [result, ...digitStack];
-
-		// console.log("digitStackTmp", digitStackTmp);
-		// console.log("operatorStack", operatorStack);
 		setDigitStack(digitStackTmp);
-		if (["*", "/", "-", "+", "=", "ˆ"].indexOf(value) !== -1 && operatorStack.length === 1) {
+		if (["*", "/", "-", "+", "=", "^"].indexOf(value) !== -1 && operatorStack.length === 1) {
 			const firstTerm = digitStackTmp.pop();
 			const secondTerm = digitStackTmp.pop();
 			const operator = operatorStack.pop();
 			let expression = firstTerm + operator + secondTerm;
-			if (operator === "ˆ") {
-				expression = expression.replace("ˆ", "**");
-			}
-			console.log(expression);
-			const result = eval(expression); // TODO Changeit
+			const result = evaluate(expression);
 			setResult(result);
 			setResultOperation(true);
 			if (value !== "=") {
@@ -52,20 +46,27 @@ export default function Calculator() {
 			setDigitStack(digitStackTmp);
 		} else if (value === "SQRT") {
 			const firstTerm = digitStackTmp.pop();
-			setResult(Math.sqrt(firstTerm));
+			const result = evaluate("sqrt(" + firstTerm + ")");
+			setResult(result);
 			setResultOperation(true);
 			digitStackTmp.push(result);
 			setDigitStack(digitStackTmp);
 		} else if (value === "%") {
 			const firstTerm = digitStackTmp.pop();
 			const secondTerm = digitStackTmp.pop();
-			const operator = operatorStack.pop();
-			let percentTerm = secondTerm / 100;
-			if (["+", "-"].indexOf(operator) !== -1) {
-				percentTerm *= firstTerm;
+			let result = 0;
+			if (!secondTerm) {
+				// in case of only digit and %, like 100%
+				result = firstTerm / 100;
+			} else {
+				const operator = operatorStack.pop();
+				let percentTerm = secondTerm / 100;
+				if (["+", "-"].indexOf(operator) !== -1) {
+					percentTerm *= firstTerm;
+				}
+				let expression = firstTerm + operator + percentTerm;
+				result = evaluate(expression);
 			}
-			let expression = firstTerm + operator + percentTerm;
-			const result = eval(expression); // TODO Changeit
 			setResultOperation(true);
 			digitStackTmp.push(result);
 			setDigitStack(digitStackTmp);
@@ -138,7 +139,7 @@ export default function Calculator() {
 				</div>
 				<div class="grid">
 					<OperatorButton value="SQRT" click={handleOperator} />
-					<OperatorButton value="ˆ" click={handleOperator} />
+					<OperatorButton value="^" click={handleOperator} />
 					<OperatorButton value="%" click={handleOperator} />
 					<OperatorButton value="/" click={handleOperator} />
 				</div>

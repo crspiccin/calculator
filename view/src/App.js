@@ -1,6 +1,6 @@
 import "@picocss/pico";
 import "./theme.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Calculator from "./components/Calculator";
 import { signup, login } from "./misc/serviceFacadeAPI";
 
