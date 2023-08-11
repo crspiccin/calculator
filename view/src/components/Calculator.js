@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Display from "./Display";
 import DigitButton from "./DigitButton";
 import OperatorButton from "./OperatorButton";
@@ -12,7 +12,8 @@ export default function Calculator() {
 	const [digitStack, setDigitStack] = useState([]);
 	const [operatorStack, setOperatorStack] = useState([]);
 	const [memory, setMemory] = useState(0);
-	const [history, setHistory] = useState([]);
+	const history = useRef("");
+	const [showHistory, setShowHistory] = useState(false);
 
 	function handleDigit(value) {
 		if (operatorStack.length === 0) {
@@ -29,8 +30,8 @@ export default function Calculator() {
 	function handleOperator(value) {
 		const digitStackTmp = [result, ...digitStack];
 
-		console.log("digitStackTmp", digitStackTmp);
-		console.log("operatorStack", operatorStack);
+		// console.log("digitStackTmp", digitStackTmp);
+		// console.log("operatorStack", operatorStack);
 		setDigitStack(digitStackTmp);
 		if (["*", "/", "-", "+", "=", "ˆ"].indexOf(value) !== -1 && operatorStack.length === 1) {
 			const firstTerm = digitStackTmp.pop();
@@ -94,6 +95,9 @@ export default function Calculator() {
 				setMemory(memory - Number(result));
 				setResult("");
 				break;
+			case "History":
+				setShowHistory(true);
+				break;
 			default:
 				console.error("invalid value", value);
 		}
@@ -106,21 +110,31 @@ export default function Calculator() {
 	}
 
 	function handleReset(value) {
+		history.current = "";
 		setDigitStack([]);
 		setOperatorStack([]);
 		setResult("");
 	}
+
+	function handleAppendHistory(value) {
+		if (isResultOperation && history.current !== "") {
+			history.current += " " + result;
+		}
+		history.current += " " + value;
+	}
+
 	return (
 		<>
 			<section>
 				<Display value={result} />
 			</section>
-			<section>
+			<section onClick={(e) => handleAppendHistory(e.target.textContent)}>
 				<div class="grid">
 					<MemoryButton value="MC" click={handleMemory} />
 					<MemoryButton value="MR" click={handleMemory} />
 					<MemoryButton value="M-" click={handleMemory} />
 					<MemoryButton value="M+" click={handleMemory} />
+					<MemoryButton value="History" click={handleMemory} />
 				</div>
 				<div class="grid">
 					<OperatorButton value="SQRT" click={handleOperator} />
@@ -153,6 +167,15 @@ export default function Calculator() {
 					<OperatorButton value="=" click={handleOperator} />
 				</div>
 			</section>
+			<dialog open={showHistory}>
+				<article>
+					<header>
+						<a href="#close" aria-label="Close" class="close" onClick={() => setShowHistory(false)}></a>
+						History
+					</header>
+					<p>{history.current}</p>
+				</article>
+			</dialog>
 		</>
 	);
 }
