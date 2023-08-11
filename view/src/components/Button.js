@@ -1,4 +1,4 @@
-export default function DecimalButton({ value, click }) {
+export default function Button({ value, click, klass }) {
 	return (
 		<div>
 			<button onClick={(e) => click(e.currentTarget.textContent)}>{value}</button>

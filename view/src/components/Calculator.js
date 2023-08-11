@@ -4,7 +4,7 @@ import Display from "./Display";
 import DigitButton from "./DigitButton";
 import OperatorButton from "./OperatorButton";
 import MemoryButton from "./MemoryButton";
-import DecimalButton from "./DecimalButton";
+import Button from "./Button";
 import ResetButton from "./ResetButton";
 
 export default function Calculator() {
@@ -131,41 +131,41 @@ export default function Calculator() {
 			</section>
 			<section onClick={(e) => handleAppendHistory(e.target.textContent)}>
 				<div class="grid">
-					<MemoryButton value="MC" click={handleMemory} />
-					<MemoryButton value="MR" click={handleMemory} />
-					<MemoryButton value="M-" click={handleMemory} />
-					<MemoryButton value="M+" click={handleMemory} />
-					<MemoryButton value="History" click={handleMemory} />
+					<Button value="MC" click={handleMemory} />
+					<Button value="MR" click={handleMemory} />
+					<Button value="M-" click={handleMemory} />
+					<Button value="M+" click={handleMemory} />
+					<Button value="History" click={handleMemory} />
 				</div>
 				<div class="grid">
-					<OperatorButton value="SQRT" click={handleOperator} />
-					<OperatorButton value="^" click={handleOperator} />
-					<OperatorButton value="%" click={handleOperator} />
-					<OperatorButton value="/" click={handleOperator} />
+					<Button value="SQRT" click={handleOperator} />
+					<Button value="^" click={handleOperator} />
+					<Button value="%" click={handleOperator} />
+					<Button value="/" click={handleOperator} />
 				</div>
 				<div class="grid">
-					<DigitButton value="7" click={handleDigit} />
-					<DigitButton value="8" click={handleDigit} />
-					<DigitButton value="9" click={handleDigit} />
-					<OperatorButton value="*" click={handleOperator} />
+					<Button value="7" click={handleDigit} />
+					<Button value="8" click={handleDigit} />
+					<Button value="9" click={handleDigit} />
+					<Button value="*" click={handleOperator} />
 				</div>
 				<div class="grid">
-					<DigitButton value="4" click={handleDigit} />
-					<DigitButton value="5" click={handleDigit} />
-					<DigitButton value="6" click={handleDigit} />
-					<OperatorButton value="-" click={handleOperator} />
+					<Button value="4" click={handleDigit} />
+					<Button value="5" click={handleDigit} />
+					<Button value="6" click={handleDigit} />
+					<Button value="-" click={handleOperator} />
 				</div>
 				<div class="grid">
-					<DigitButton value="1" click={handleDigit} />
-					<DigitButton value="2" click={handleDigit} />
-					<DigitButton value="3" click={handleDigit} />
-					<OperatorButton value="+" click={handleOperator} />
+					<Button value="1" click={handleDigit} />
+					<Button value="2" click={handleDigit} />
+					<Button value="3" click={handleDigit} />
+					<Button value="+" click={handleOperator} />
 				</div>
 				<div class="grid">
-					<ResetButton value="AC" click={handleReset} />
-					<DigitButton value="0" click={handleDigit} />
-					<DecimalButton value="." click={handleDecimal} />
-					<OperatorButton value="=" click={handleOperator} />
+					<Button value="AC" click={handleReset} />
+					<Button value="0" click={handleDigit} />
+					<Button value="." click={handleDecimal} />
+					<Button value="=" click={handleOperator} />
 				</div>
 			</section>
 			<dialog open={showHistory}>

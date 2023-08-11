@@ -1,9 +1,11 @@
 import { Router } from "express";
 import { User } from "../entity/entities";
 import { createInstance } from "../service/UserService";
+import InvalidPasswordException from "../exception/InvalidPasswordException";
 
 const HTTP_STATUS_NOT_FOUND = 404;
 const HTTP_STATUS_SERVER_ERROR = 500;
+const HTTP_STATUS_FORBIDDEN = 403;
 
 const router = Router();
 const userService = createInstance();
@@ -42,7 +44,9 @@ router.post("/login", async (req, res) => {
 		}
 		return res.sendStatus(HTTP_STATUS_NOT_FOUND);
 	} catch (err) {
-		console.error(err);
+		if (err instanceof InvalidPasswordException) {
+			return res.sendStatus(HTTP_STATUS_FORBIDDEN);
+		}
 		return res.sendStatus(HTTP_STATUS_SERVER_ERROR);
 	}
 });

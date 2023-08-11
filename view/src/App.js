@@ -5,6 +5,8 @@ import Calculator from "./components/Calculator";
 import { signup, login } from "./misc/serviceFacadeAPI";
 
 const MESSAGE_ERROR = "Service error, please try again in a few minutes.";
+const MESSAGE_INVALID_LOGIN = "Invalid Login";
+const HTTP_STATUS_CODE_FORBIDDEN = 403;
 
 function App() {
 	const emptyUser = { email: "", password: "", confirmPassword: "", isLogged: false, id: "" };
@@ -41,8 +43,12 @@ function App() {
 					setUser({ email: userResponse.email, isLogged: true, id: userResponse.id });
 				})
 				.catch((err) => {
-					console.error("Error on signup", err);
-					setMessage(MESSAGE_ERROR);
+					console.error("Error on login", err);
+					if (err.response.status === HTTP_STATUS_CODE_FORBIDDEN) {
+						setMessage(MESSAGE_INVALID_LOGIN);
+					} else {
+						setMessage(MESSAGE_ERROR);
+					}
 				});
 		} else {
 			if (user.password !== user.confirmPassword) {
