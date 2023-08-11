@@ -1,8 +1,8 @@
 import axios from "axios";
-
+const { REACT_APP_PRO_BACK_URL } = process.env;
 // const config = getAppConfig();
 
-const url = "http://localhost:3010";
+const url = REACT_APP_PRO_BACK_URL;
 
 async function signup(user) {
 	const response = await axios.post(url + "/users/signup", user, {
