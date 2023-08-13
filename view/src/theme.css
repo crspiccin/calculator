@@ -21,14 +21,6 @@ small {
 	color: var(--muted-color);
 }
 
-/* Header */
-.hero {
-	background-color: #394046;
-	/* background-image: url("img/sascha-eremin-DNQ-M93tHmA-unsplash-3000x1000.jpg"); */
-	background-position: center;
-	background-size: cover;
-}
-
 header h1,
 header p {
 	text-align: center;
@@ -51,4 +43,8 @@ header hgroup {
 summary[role="link"].contrast:is([aria-current], :hover, :active, :focus) {
 	background-color: transparent;
 	color: var(--contrast-hover);
+}
+
+#result {
+	text-align: right;
 }
