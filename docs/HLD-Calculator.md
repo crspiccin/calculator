@@ -59,5 +59,5 @@ Our proposal is to create a solution composed by the following modules:
 
 ##### References
 
-- [Onion Architecture] (https://www.codeguru.com/csharp/understanding-onion-architecture/)
+- [Onion Architecture](https://www.codeguru.com/csharp/understanding-onion-architecture/)
 - [Render - Free instance](https://render.com/docs/free)
