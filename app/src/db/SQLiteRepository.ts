@@ -8,7 +8,7 @@ export class SQLLiteRepository {
 		(async () => {
 			// open the database
 			this.db = await open({
-				filename: path.join(__dirname, "..", "..", process.env.DB_NAME || ""),
+				filename: path.join(__dirname, "..", "..", process.env.DB_NAME || "calculator.db"),
 				driver: sqlite3.Database,
 			});
 			this.db.run("PRAGMA foreign_keys = ON;");

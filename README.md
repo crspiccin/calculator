@@ -52,3 +52,13 @@ npm run dev
 ### 4. Use it
 
 You should be able to go to [](http://localhost:3000) and use the application
+
+## Configuration
+
+When deploying the application, the following environment variables must be set:
+
+| Environment Variable   | Default value           | Description                    |
+| ---------------------- | ----------------------- | ------------------------------ |
+| DB_NAME                | calculator.db           | Name of SQL Lite database file |
+| PORT                   | 3010                    | Backend service port           |
+| REACT_APP_PRO_BACK_URL | `http://localhost:3010` | Backend service url            |
