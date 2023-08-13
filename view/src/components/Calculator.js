@@ -8,15 +8,15 @@ import ResetButton from "./ResetButton";
 export default function Calculator() {
 	const [result, setResult] = useState("");
 	const [isResultOperation, setResultOperation] = useState(false);
-	const [digitStack, setDigitStack] = useState([]);
-	const [operatorStack, setOperatorStack] = useState([]);
-	const [memory, setMemory] = useState(0);
+	const digitStack = useRef([]);
+	const operatorStack = useRef([]);
+	const memory = useRef(0);
 	const history = useRef("");
 	const [showHistory, setShowHistory] = useState(false);
 
 	function handleDigit(value) {
-		if (operatorStack.length === 0) {
-			setDigitStack([]);
+		if (operatorStack.current.length === 0) {
+			digitStack.current = [];
 		}
 		if (isResultOperation) {
 			setResult(value);
@@ -27,37 +27,33 @@ export default function Calculator() {
 	}
 
 	function handleOperator(value) {
-		const digitStackTmp = [result, ...digitStack];
-		setDigitStack(digitStackTmp);
-		if (["*", "/", "-", "+", "=", "^"].indexOf(value) !== -1 && operatorStack.length === 1) {
-			const firstTerm = digitStackTmp.pop();
-			const secondTerm = digitStackTmp.pop();
-			const operator = operatorStack.pop();
+		digitStack.current = [result, ...digitStack.current];
+		if (["*", "/", "-", "+", "=", "^"].indexOf(value) !== -1 && operatorStack.current.length === 1) {
+			const firstTerm = digitStack.current.pop();
+			const secondTerm = digitStack.current.pop();
+			const operator = operatorStack.current.pop();
 			let expression = firstTerm + operator + secondTerm;
 			const result = evaluate(expression);
 			setResult(result);
 			setResultOperation(true);
 			if (value !== "=") {
-				digitStackTmp.push(result);
+				digitStack.current.push(result);
 			}
-
-			setDigitStack(digitStackTmp);
 		} else if (value === "SQRT") {
-			const firstTerm = digitStackTmp.pop();
+			const firstTerm = digitStack.current.pop();
 			const result = evaluate("sqrt(" + firstTerm + ")");
 			setResult(result);
 			setResultOperation(true);
-			digitStackTmp.push(result);
-			setDigitStack(digitStackTmp);
+			digitStack.current.push(result);
 		} else if (value === "%") {
-			const firstTerm = digitStackTmp.pop();
-			const secondTerm = digitStackTmp.pop();
+			const firstTerm = digitStack.current.pop();
+			const secondTerm = digitStack.current.pop();
 			let result = 0;
 			if (!secondTerm) {
 				// in case of only digit and %, like 100%
 				result = firstTerm / 100;
 			} else {
-				const operator = operatorStack.pop();
+				const operator = operatorStack.current.pop();
 				let percentTerm = secondTerm / 100;
 				if (["+", "-"].indexOf(operator) !== -1) {
 					percentTerm *= firstTerm;
@@ -66,32 +62,31 @@ export default function Calculator() {
 				result = evaluate(expression);
 			}
 			setResultOperation(true);
-			digitStackTmp.push(result);
-			setDigitStack(digitStackTmp);
+			digitStack.current.push(result);
 			setResult(result);
 		} else {
 			setResult("");
 		}
 		if (["=", "SQRT"].indexOf(value) === -1) {
-			setOperatorStack([...operatorStack, value]);
+			operatorStack.current = [...operatorStack.current, value];
 		}
 	}
 
 	function handleMemory(value) {
 		switch (value) {
 			case "MC":
-				setMemory(0);
+				memory.current = 0;
 				setResult("");
 				break;
 			case "MR":
-				setResult(memory);
+				setResult(memory.current);
 				break;
 			case "M+":
-				setMemory(memory + Number(result));
+				memory.current = memory.current + Number(result);
 				setResult("");
 				break;
 			case "M-":
-				setMemory(memory - Number(result));
+				memory.current = memory.current - Number(result);
 				setResult("");
 				break;
 			case "History":
@@ -110,8 +105,8 @@ export default function Calculator() {
 
 	function handleReset(value) {
 		history.current = "";
-		setDigitStack([]);
-		setOperatorStack([]);
+		digitStack.current = [];
+		operatorStack.current = [];
 		setResult("");
 	}
 
