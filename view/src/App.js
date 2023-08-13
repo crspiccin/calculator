@@ -1,6 +1,6 @@
 import "@picocss/pico";
 import "./theme.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Calculator from "./components/Calculator";
 import { signup, login } from "./misc/serviceFacadeAPI";
 
@@ -32,6 +32,7 @@ function App() {
 
 	const handleLogout = () => {
 		setUser(emptyUser);
+		removeUserLocalSession();
 	};
 
 	const handleSubmit = (e) => {
@@ -40,7 +41,9 @@ function App() {
 			login(user)
 				.then((userResponse) => {
 					handleClose();
-					setUser({ email: userResponse.email, isLogged: true, id: userResponse.id });
+					const userLogged = { email: userResponse.email, isLogged: true, id: userResponse.id };
+					setUser(userLogged);
+					setUserLocalSession(userLogged);
 				})
 				.catch((err) => {
 					console.error("Error on login", err);
@@ -57,7 +60,9 @@ function App() {
 			signup(user)
 				.then((id) => {
 					handleClose();
-					setUser({ ...user, id, isLogged: true });
+					const userLogged = { ...user, id, isLogged: true };
+					setUser(userLogged);
+					setUserLocalSession(userLogged);
 				})
 				.catch((err) => {
 					console.error("Error on signup", err);
@@ -65,6 +70,28 @@ function App() {
 				});
 		}
 	};
+
+	function setUserLocalSession(userParam) {
+		localStorage.setItem("user", JSON.stringify(userParam));
+	}
+	function getUserLocalSession() {
+		if (localStorage.getItem("user")) {
+			return JSON.parse(localStorage.getItem("user"));
+		}
+		return null;
+	}
+
+	function removeUserLocalSession() {
+		localStorage.removeItem("user");
+	}
+
+	useEffect(() => {
+		const userSession = getUserLocalSession();
+		if (userSession) {
+			console.log("session", userSession);
+			setUser(userSession);
+		}
+	}, []);
 
 	return (
 		<html>
@@ -117,6 +144,7 @@ function App() {
 										<input
 											type="password"
 											name="password"
+											minlength="8"
 											placeholder="Password"
 											aria-label="Password"
 											autocomplete="current-password"
@@ -128,6 +156,7 @@ function App() {
 											<input
 												type="password"
 												name="confirmPassword"
+												minlength="8"
 												placeholder="Confirm Password"
 												aria-label="ConfirmPassword"
 												autocomplete="confirm-password"
