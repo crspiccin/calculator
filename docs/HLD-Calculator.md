@@ -35,13 +35,13 @@ Our proposal is to create a solution composed by the following modules:
 ### Calculator
 
 - For our calculator, as its a enclosed domain without external intergrations necessity - only pure math, we are going to process all calculator engine on the frontend.
-- We choose React.JS as our frontend engine, given the broad use and community, besides the fact it makes easier to encapsulate logic and to work with html events and rendering.
+- We choose React.js as our frontend engine, given the broad use and community, besides the fact it makes easier to encapsulate logic and to work with html events and rendering.
 - Our structure will have a Calculator component with states processing all the math engine, being a parent component, a Button component representing an operation, digit, memory, etc and a Display representing the math result.
 
 ### Authentication
 
-- We must create an authentication service, this service will expose a REST interface with signup en login operations, and we choose to use typescript based on Express.JS
-- We are going to create an simple mechanism with user and password on our database, the user password will be criptographed.
+- We must create an authentication service, this service will expose a REST interface with signup en login operations, and we choose to use typescript based on Express.js
+- We are going to create an simple mechanism with user and password on our database, the user password will be encrypted.
 - Initially, we are going to use SQL database, as we have only one single instance for our MVP ,we can use SQL Lite as our SQL database engine.
 - The service must follow the Onion Architecture, in this type of architecture, the service and entities are agnostic on the technologies that we are using to expose and persist information, only taking care on the businness rules. It will make easier in the future if we need change how to expose the application, changing databases, inject unit tests, etc.
 
