@@ -1,8 +1,8 @@
-# High Level Design - Calculator System
+# Technical specification - Calculator Web
 
 ## Context
 
-Currently, our users complaint about the lack of confidence when making basic math operations like addition, subtraction, multiplication and division and based on these and others needs we are going to construct a new calculator portal. This portal should have the following requirements:
+Currently, our users complaint about the lack of confidence when making basic math operations like addition, subtraction, multiplication and division and based on these and others needs, we are going to construct a new calculator portal. This portal should have the following requirements:
 
 - The calculator should have a browser-based user interface (ie it can be opened using a web
   browser)
@@ -55,9 +55,9 @@ Our proposal is to create a solution composed by the following modules:
 - It's important to mention that our choice towards SQL Lite is based currenlty on the small size of our application, we are testing and using a small workload without multiples instances, but as our application scale, we need rethink our database strategy, choosing a database where we can afford multiple connections from multiples services instances.
 - Since we are using a free hosting (Render) initially, eventually we are going to face latency in our login and signup process, we can move from the free tier to the paid tier or move to another cloud provider offering more tools as we grow and our architecture turning more complex.
 - Our log system is very basic using only console.log and console.error which is not the ideal, in the long run we must change this model using a more robust alternative like winston.
+- For demonstration purposes we are going to use local storage to store user session, but in future for security sake, we are planning to use cookies with JWT to persist session authentication.
 
 ##### References
 
-- [About ADR's](https://github.com/joelparkerhenderson/architecture-decision-record)
 - [Onion Architecture] (https://www.codeguru.com/csharp/understanding-onion-architecture/)
 - [Render - Free instance](https://render.com/docs/free)
