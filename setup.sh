@@ -8,7 +8,7 @@ fi
 
 # Check if .env file exists in app folder
 if [ ! -f view/.env ]; then
-  echo "REACT_APP_PRO_BACK_URL="http://localhots:3010"" > app/.env
+  echo "REACT_APP_PRO_BACK_URL="http://localhots:3010"" > view/.env
 fi
 
 # Run npm install and npm run dev on app folder
