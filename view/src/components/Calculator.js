@@ -1,8 +1,6 @@
 import { useState, useRef } from "react";
 import { evaluate } from "mathjs";
 import Display from "./Display";
-import DigitButton from "./DigitButton";
-import OperatorButton from "./OperatorButton";
 import MemoryButton from "./MemoryButton";
 import Button from "./Button";
 import ResetButton from "./ResetButton";
@@ -131,11 +129,11 @@ export default function Calculator() {
 			</section>
 			<section onClick={(e) => handleAppendHistory(e.target.textContent)}>
 				<div class="grid">
-					<Button value="MC" click={handleMemory} />
-					<Button value="MR" click={handleMemory} />
-					<Button value="M-" click={handleMemory} />
-					<Button value="M+" click={handleMemory} />
-					<Button value="History" click={handleMemory} />
+					<MemoryButton value="MC" click={handleMemory} />
+					<MemoryButton value="MR" click={handleMemory} />
+					<MemoryButton value="M-" click={handleMemory} />
+					<MemoryButton value="M+" click={handleMemory} />
+					<MemoryButton value="History" click={handleMemory} />
 				</div>
 				<div class="grid">
 					<Button value="SQRT" click={handleOperator} />
@@ -162,7 +160,7 @@ export default function Calculator() {
 					<Button value="+" click={handleOperator} />
 				</div>
 				<div class="grid">
-					<Button value="AC" click={handleReset} />
+					<ResetButton value="AC" click={handleReset} />
 					<Button value="0" click={handleDigit} />
 					<Button value="." click={handleDecimal} />
 					<Button value="=" click={handleOperator} />
